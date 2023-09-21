@@ -36,7 +36,7 @@ public class RewardsService {
 	}
 	
 	public void setProximityBuffer(int proximityBuffer) {
-		this.proximityBuffer = proximityBuffer;
+		this.proximityBufferMiles = proximityBuffer;
 	}
 	
 	public void setDefaultProximityBuffer() {
@@ -47,20 +47,13 @@ public class RewardsService {
 	//modif ici
 	public void calculateRewards (User user) {
 
-		List<VisitedLocation> userLocations = user.getVisitedLocations();
 		List<VisitedLocation> copiedUserLocations = user.getVisitedLocations().stream().collect(Collectors.toList());
-
-		Iterator<VisitedLocation> iterator = userLocations.iterator();
-		while (iterator.hasNext()) {
-			VisitedLocation location = iterator.next();
-			copiedUserLocations.add(new VisitedLocation(user.getUserId(), user.getLastVisitedLocation().location, user.getLatestLocationTimestamp()));
-		}
 		List<Attraction> attractions = gpsUtil.getAttractions();
 
 		for(VisitedLocation location : copiedUserLocations) {
 			for(Attraction attraction : attractions) {
 				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
-					calculateDistanceReward(user, location,attraction);
+					calculateDistanceReward(user, location, attraction);
 				}
 			}
 		}
@@ -75,10 +68,8 @@ public class RewardsService {
 		}
 	}
 
-	//rajout ici
+	//rajout ici pourquoi ca tourne qu'une fois alors qu'on a besoin de 26
 	private void submitRewardPoints(UserReward userReward, Attraction attraction, User user) {
-	userReward.setRewardPoints(10);
-	user.addUserReward(userReward);
 		CompletableFuture.supplyAsync(() -> {
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
 				}, executorService)

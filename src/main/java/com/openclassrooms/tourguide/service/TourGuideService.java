@@ -127,6 +127,8 @@ public class TourGuideService {
 		return nearbyAttractions;
 		}
 
+
+
 		private void sortByDistance(VisitedLocation visitedLocation, List<Attraction> attractions){
 			Collections.sort(attractions, new Comparator<Attraction>() {
 				@Override

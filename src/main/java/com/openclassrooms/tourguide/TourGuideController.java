@@ -1,11 +1,13 @@
 package com.openclassrooms.tourguide;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
+import ch.qos.logback.core.read.ListAppender;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import gpsUtil.location.Attraction;
@@ -44,15 +46,10 @@ public class TourGuideController {
         //    Note: Attraction reward points can be gathered from RewardsCentral
 
     //modif ici
-    @RequestMapping(value = "/getNearbyAttractions", method = RequestMethod.GET)
-    @ResponseBody
-    public String getNearbyAttractions(@RequestParam String userName) throws JsonProcessingException {
-    	VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
-        List<Attraction> attractions = tourGuideService.getNearByAttractions(visitedLocation);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String attractionJson = objectMapper.writeValueAsString(attractions);
-        return attractionJson;
+    @RequestMapping(value = "/getNearByAttractions", method = RequestMethod.GET)
+    public List<Attraction> getNearbyAttractions(@RequestParam String userName) {
+        VisitedLocation visitedLocation = tourGuideService.getUserLocation(getUser(userName));
+        return tourGuideService.getNearByAttractions(visitedLocation);
     }
     
     @RequestMapping("/getRewards") 
