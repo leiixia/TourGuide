@@ -9,6 +9,7 @@ public class AttractionDTO {
     public double userLongitude;
     public double milesDistance;
     public int rewardPoints;
+    public String userName;
 
     public double getAttractionLatitude() {
         return attractionLatitude;
@@ -65,5 +66,14 @@ public class AttractionDTO {
 
     public void setAttractionName(String attractionName) {
         this.attractionName = attractionName;
+    }
+
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

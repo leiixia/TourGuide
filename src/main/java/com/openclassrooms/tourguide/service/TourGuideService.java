@@ -111,16 +111,6 @@ public class TourGuideService {
 		sortByDistance(visitedLocation, attractions);
 		for (int i = 0; i<5; i++) {
 			Attraction a = attractions.get(i);
-					AttractionDTO attractionDTO = new AttractionDTO();
-					attractionDTO.setAttractionName(a.attractionName);
-					attractionDTO.setAttractionLatitude(a.latitude);
-					attractionDTO.setAttractionLongitude(a.longitude);
-					attractionDTO.setAttractionLongitude(visitedLocation.location.longitude);
-					attractionDTO.setAttractionLatitude(visitedLocation.location.latitude);
-					attractionDTO.setUserLatitude(attractionDTO.getUserLatitude());
-					attractionDTO.setUserLongitude(attractionDTO.getUserLongitude());
-					attractionDTO.setMilesDistance(rewardsService.getDistance(visitedLocation.location, a));
-					attractionDTO.setRewardPoints(attractionDTO.rewardPoints);
 					nearbyAttractions.add(a);
 				}
 
