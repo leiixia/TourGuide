@@ -68,7 +68,7 @@ public class RewardsService {
 		}
 	}
 
-	//rajout ici pourquoi ca tourne qu'une fois alors qu'on a besoin de 26
+	//rajout ici
 	private void submitRewardPoints(UserReward userReward, Attraction attraction, User user) {
 		CompletableFuture.supplyAsync(() -> {
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
