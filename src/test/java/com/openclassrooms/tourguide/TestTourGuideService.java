@@ -33,7 +33,7 @@ public class TestTourGuideService {
 		tourGuideService.trackUserLocation(user);
 
 		while (user.getVisitedLocations().isEmpty()){
-			TimeUnit.MILLISECONDS.sleep(50);
+			TimeUnit.MILLISECONDS.sleep(1);
 		}
 		List<Attraction> attractions = tourGuideService.getNearByAttractions(user.getLastVisitedLocation());
 
@@ -97,7 +97,7 @@ public class TestTourGuideService {
 
 
 		while (user.getVisitedLocations().isEmpty()){
-			TimeUnit.MILLISECONDS.sleep(50);
+			TimeUnit.MILLISECONDS.sleep(1);
 		}
 		List<Attraction> attractions = tourGuideService.getNearByAttractions(user.getLastVisitedLocation());
 
@@ -119,8 +119,9 @@ public class TestTourGuideService {
 		tourGuideService.trackUserLocation(user);
 
 		while (user.getVisitedLocations().isEmpty()){
-			TimeUnit.MILLISECONDS.sleep(50);
+			TimeUnit.MILLISECONDS.sleep(1);
 		}
+
 		List<Attraction> attractions = tourGuideService.getNearByAttractions(user.getLastVisitedLocation());
 
 		tourGuideService.tracker.stopTracking();

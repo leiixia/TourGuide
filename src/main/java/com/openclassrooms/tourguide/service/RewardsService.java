@@ -13,56 +13,62 @@ import gpsUtil.GpsUtil;
 import gpsUtil.location.Attraction;
 import gpsUtil.location.Location;
 import gpsUtil.location.VisitedLocation;
+import org.w3c.dom.Attr;
 import rewardCentral.RewardCentral;
 import com.openclassrooms.tourguide.user.User;
 import com.openclassrooms.tourguide.user.UserReward;
 
 @Service
 public class RewardsService {
-    private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
+	private static final double STATUTE_MILES_PER_NAUTICAL_MILE = 1.15077945;
 
 	// proximity in miles
 	private int proximityBufferMiles = 10;
-    private int defaultProximityBuffer = 10;
+	private int defaultProximityBuffer = 10;
 	private int proximityBuffer = defaultProximityBuffer;
 	private int attractionProximityRange = 200;
 	private final GpsUtil gpsUtil;
 	private final RewardCentral rewardsCentral;
 	private ExecutorService executorService = Executors.newFixedThreadPool(1000);
-	
+
 	public RewardsService(GpsUtil gpsUtil, RewardCentral rewardCentral) {
 		this.gpsUtil = gpsUtil;
 		this.rewardsCentral = rewardCentral;
 	}
-	
+
 	public void setProximityBuffer(int proximityBuffer) {
 		this.proximityBufferMiles = proximityBuffer;
 	}
-	
+
 	public void setDefaultProximityBuffer() {
 		proximityBuffer = defaultProximityBuffer;
 	}
 
 
 	//modif ici
-	public void calculateRewards (User user) {
-
+	public void calculateRewards(User user) {
 		List<VisitedLocation> copiedUserLocations = user.getVisitedLocations().stream().collect(Collectors.toList());
 		List<Attraction> attractions = gpsUtil.getAttractions();
 
-		for(VisitedLocation location : copiedUserLocations) {
-			for(Attraction attraction : attractions) {
-				if(user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
-					calculateDistanceReward(user, location, attraction);
-				}
-			}
-		}
-	}
+				//	System.out.println("*** " + copiedUserLocations.size());
+				//	System.out.println(user.getUserName());
+				//	System.out.println(user);
+
+					for(VisitedLocation location : copiedUserLocations) {
+						for (Attraction attraction : attractions) {
+							if (user.getUserRewards().stream().filter(r -> r.attraction.attractionName.equals(attraction.attractionName)).count() == 0) {
+								calculateDistanceReward(user, location, attraction);
+
+							}
+						}
+					}}
+
 
 	//rajout ici
 	public void calculateDistanceReward(User user, VisitedLocation visitedLocation, Attraction attraction) {
 		Double distance = getDistance(attraction, visitedLocation.location);
 		if(distance <= proximityBufferMiles) {
+			//System.out.println(attraction.attractionName + " OK");
 			UserReward userReward = new UserReward(visitedLocation, attraction, distance.intValue());
 			submitRewardPoints(userReward, attraction, user);
 		}
@@ -74,6 +80,7 @@ public class RewardsService {
 		return rewardsCentral.getAttractionRewardPoints(attraction.attractionId, user.getUserId());
 				}, executorService)
 				.thenAccept(points -> {
+					//System.out.println("###################################");
 					userReward.setRewardPoints(points);
 					user.addUserReward(userReward);
 				});

@@ -38,7 +38,7 @@ public class TestRewardsService {
 		tourGuideService.trackUserLocation(user);
 
 		try {
-			TimeUnit.MILLISECONDS.sleep(1000);
+			TimeUnit.MILLISECONDS.sleep(900);
 		} catch (InterruptedException e) {
 		}
 
@@ -71,7 +71,7 @@ public class TestRewardsService {
 		List<UserReward> userRewards = tourGuideService.getUserRewards(tourGuideService.getAllUsers().get(0));
 
 		try {
-			TimeUnit.MILLISECONDS.sleep(500);
+			TimeUnit.MILLISECONDS.sleep(550);
 		} catch (InterruptedException e) {
 		}
 

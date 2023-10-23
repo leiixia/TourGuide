@@ -72,24 +72,36 @@ public class TestPerformance {
 		assertTrue(TimeUnit.MINUTES.toSeconds(15) >= TimeUnit.MILLISECONDS.toSeconds(stopWatch.getTime()));
 	}
 
-	//marche
+	//marche plus
 
 	@Test
-	public void highVolumeGetRewards() {
+	public void highVolumeGetRewards() throws InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
 		RewardsService rewardsService = new RewardsService(gpsUtil, new RewardCentral());
 
-		InternalTestHelper.setInternalUserNumber(10000);
+		InternalTestHelper.setInternalUserNumber(100000);
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
+		//sortir le tracker de tourguideservice pour savoir qu'il se lance ici
 		TourGuideService tourGuideService = new TourGuideService(gpsUtil, rewardsService);
 
 		Attraction attraction = gpsUtil.getAttractions().get(0);
-		List<User> allUsers = new ArrayList<>();
-		allUsers = tourGuideService.getAllUsers();
+		List<User> allUsers = tourGuideService.getAllUsers();
 		allUsers.forEach(u -> u.addToVisitedLocations(new VisitedLocation(u.getUserId(), attraction, new Date())));
 
-		allUsers.forEach(u -> rewardsService.calculateRewards(u));
+
+		//retire parce que sinon double liste effectue
+		//allUsers.forEach(u -> rewardsService.calculateRewards(u));
+
+		boolean ok = false;
+		while (!ok) {
+			TimeUnit.SECONDS.sleep(1);
+			ok = true;
+			for(User user : allUsers) {
+				ok &= user.getUserRewards().size() > 0;
+			}
+		}
+
 
 		for (User user : allUsers) {
 			assertTrue(user.getUserRewards().size() > 0);
