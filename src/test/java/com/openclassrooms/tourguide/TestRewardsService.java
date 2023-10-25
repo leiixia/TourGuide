@@ -38,7 +38,7 @@ public class TestRewardsService {
 		tourGuideService.trackUserLocation(user);
 
 		try {
-			TimeUnit.MILLISECONDS.sleep(900);
+			TimeUnit.SECONDS.sleep(10);
 		} catch (InterruptedException e) {
 		}
 
