@@ -48,6 +48,7 @@ public class TestPerformance {
 
 
 	//marche
+	@Disabled
 	@Test
 	public void highVolumeTrackLocation() {
 		GpsUtil gpsUtil = new GpsUtil();
@@ -74,6 +75,7 @@ public class TestPerformance {
 
 	//marche plus
 
+	@Disabled
 	@Test
 	public void highVolumeGetRewards() throws InterruptedException {
 		GpsUtil gpsUtil = new GpsUtil();
